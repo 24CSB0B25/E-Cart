@@ -1,0 +1,5 @@
+.vscode/
+.snapshots/
+.idea/
+.DS_Store
+Thumbs.db
