@@ -28,19 +28,24 @@ function navigate(view, params = {}) {
   State.currentView = view;
   State.currentProduct = params.productId || null;
 
-  // Hide cat-bar on some pages
-  const hideCat = ['login', 'signup', 'checkout', 'order-confirm', 'admin', 'admin-form'];
+  // Hide cat-bar on some pages (also hide it for the dedicated browse/results page)
+  const hideCat = ['login', 'signup', 'checkout', 'order-confirm', 'admin', 'admin-form', 'home', 'browse'];
   document.getElementById('cat-bar').style.display = hideCat.includes(view) ? 'none' : '';
 
-  // Hide footer on auth pages
-  const hideFooter = ['login', 'signup'];
+  // Hide footer on auth pages, home and browse (browse/results page should be minimal)
+  const hideFooter = ['login', 'signup', 'home', 'browse'];
   document.getElementById('site-footer').style.display = hideFooter.includes(view) ? 'none' : '';
+
+  // Hide navbar on selected minimal pages (login/signup/home/browse)
+  const hideHeader = ['login', 'signup', 'home', 'browse'];
+  document.getElementById('navbar').style.display = hideHeader.includes(view) ? 'none' : '';
 
   // Render
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
   switch (view) {
     case 'home':        renderHome(); break;
+    case 'browse':      renderBrowse(); break;
     case 'product':     renderProductDetail(params.productId); break;
     case 'cart':        renderCart(); break;
     case 'checkout':    renderCheckout(); break;
@@ -188,7 +193,7 @@ function setupCategoryBar() {
       const catSel = document.getElementById('search-cat-select');
       if (catSel) catSel.value = cat;
 
-      if (State.currentView !== 'home') navigate('home');
+      if (State.currentView !== 'browse') navigate('browse');
       else renderProductGrid();
     });
   });
@@ -214,7 +219,7 @@ function setupSearch() {
     });
 
     hideSuggestions();
-    if (State.currentView !== 'home') navigate('home');
+    if (State.currentView !== 'browse') navigate('browse');
     else renderProductGrid();
   };
 
@@ -289,8 +294,13 @@ function setupSearch() {
   input.addEventListener('input', () => {
     showSuggestions();
     
-    // Real-time homepage filtering
+    // If they are on home, typing immediately switches them to browse
     if (State.currentView === 'home') {
+      State.searchQuery = input.value.trim();
+      const cat = catSel.value;
+      State.activeCategory = cat;
+      navigate('browse');
+    } else if (State.currentView === 'browse') {
       State.searchQuery = input.value.trim();
       const cat = catSel.value;
       State.activeCategory = cat;
@@ -307,6 +317,9 @@ function setupSearch() {
       showSuggestions();
     }
     if (State.currentView === 'home') {
+      State.activeCategory = catSel.value;
+      navigate('browse');
+    } else if (State.currentView === 'browse') {
       State.activeCategory = catSel.value;
       document.querySelectorAll('.cat-pill').forEach(p => {
         p.classList.toggle('active', p.dataset.cat === catSel.value);

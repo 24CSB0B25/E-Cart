@@ -2,6 +2,22 @@
    PRODUCTS.JS — Browse, Detail, Search, Filter
    ═══════════════════════════════════════════════════════════════ */
 
+// ── RENDER BROWSE / RESULTS PAGE ─────────────────────────────
+function renderBrowse() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="browse-page" id="browse-section">
+      <div class="browse-top" style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;">
+        <button class="btn-secondary" onclick="navigate('home')">← Back to Home</button>
+        <div style="flex:1; text-align:center; font-weight:700; font-size:1.05rem;">Search Results</div>
+        <div style="width:90px"></div>
+      </div>
+      <div class="product-grid" id="product-grid"></div>
+    </section>`;
+
+  renderProductGrid();
+}
+
 // ── RENDER HOME ───────────────────────────────────────────────
 function renderHome() {
   const app = document.getElementById('app');
@@ -34,6 +50,16 @@ function renderHome() {
       </div>
     </div>
 
+      <section class="about-section fade-in" id="about-section" style="padding:28px 0;">
+        <div class="section-header" style="margin-bottom:12px;">
+          <div class="section-title">About E-Cart</div>
+        </div>
+        <div class="about-content">
+          <p>E-Cart is a lightweight, client-side e-commerce demo built with plain HTML, CSS and JavaScript. It stores data locally using localStorage and demonstrates features like search suggestions, SPA routing, a product catalog, cart & checkout flow, order history, and a simple admin dashboard for managing products.</p>
+          <p>This project is ideal for hosting on GitHub Pages or running locally as a static site. Default admin credentials: admin@ecart.com / admin123.</p>
+        </div>
+      </section>
+
     <section class="products-section fade-in" id="products-grid-section">
       <div class="section-header">
         <div class="section-title" id="section-title-text">All Products</div>
@@ -56,6 +82,13 @@ function renderHome() {
         </div>
       </div>
       <div class="product-grid" id="product-grid"></div>
+    </section>
+
+    <section class="home-socials fade-in" id="home-socials" style="padding:20px 0; text-align:center;">
+      <a href="#" aria-label="Facebook" class="social-link">🔵 Facebook</a>
+      <a href="#" aria-label="Twitter" class="social-link">🐦 Twitter</a>
+      <a href="#" aria-label="Instagram" class="social-link">📸 Instagram</a>
+      <a href="#" aria-label="YouTube" class="social-link">▶️ YouTube</a>
     </section>`;
 
   renderProductGrid();
